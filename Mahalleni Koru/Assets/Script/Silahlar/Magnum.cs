@@ -72,7 +72,10 @@ public class Magnum : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.R))
         {
-            animatorum.Play("sarjorDegis");
+            if (KalanMermi < SarjorKapasite && ToplamMermi != 0)
+            {
+                animatorum.Play("sarjorDegis");
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -110,7 +113,6 @@ public class Magnum : MonoBehaviour
                 }
             }
         }
-
 
     }
     void KameraYaklastir()
@@ -155,6 +157,22 @@ public class Magnum : MonoBehaviour
 
         }
     }
+    IEnumerator CameraTitre(float titremeSuresi, float magnitude)
+    {
+        Vector3 orijinalPozisyon = benimCam.transform.localPosition;
+
+        float gecenSure = 0.0f;
+        while (gecenSure < titremeSuresi)
+        {
+            float x = Random.Range(-1, 1) * magnitude;
+            benimCam.transform.localPosition = new Vector3(x, orijinalPozisyon.y, orijinalPozisyon.x);
+            gecenSure += Time.deltaTime;
+            yield return null;
+
+        }
+
+        benimCam.transform.localPosition = orijinalPozisyon;
+    }
     void mermiKaydet(string silahTuru, int mermiSayisi)
     {
         MermiAlmaSesi.Play();
@@ -182,21 +200,16 @@ public class Magnum : MonoBehaviour
     void SarjorSes()
     {
         SarjorSesi.Play();
-        if (KalanMermi < SarjorKapasite)
+        if (KalanMermi < SarjorKapasite && ToplamMermi != 0)
         {
-            if (KalanMermi != 0 && ToplamMermi != 0)
+            if (KalanMermi != 0)
             {
                 sarjorDoldurmaTeknik("MermiVar");
-            }
-            else if (ToplamMermi == 0)
-            {
-                sarjorDoldurmaTeknik("MermiYok");
             }
             else
             {
                 sarjorDoldurmaTeknik("MermiYok");
             }
-
         }
     }
     void sarjorDoldurmaTeknik(string tur)
@@ -293,7 +306,7 @@ public class Magnum : MonoBehaviour
             Rigidbody rb = obje.GetComponent<Rigidbody>();
             rb.AddRelativeForce(new Vector3(-10, 1, 0) * 60);
         }
-
+        StartCoroutine(CameraTitre(.1f,.1f));
         AtesSesi.Play();
         AtesEfekti.Play();
         if (!yakinlasmaVarmi)

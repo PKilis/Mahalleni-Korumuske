@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class Ak47 : MonoBehaviour
 {
     Animator animatorum;
@@ -72,10 +73,13 @@ public class Ak47 : MonoBehaviour
 
 
         }
-        Debug.Log("sarjordaki mermi " + KalanMermi + "Toplam mermi " + ToplamMermi);
         if (Input.GetKey(KeyCode.R))
         {
-            animatorum.Play("sarjorDegis");
+            if (KalanMermi < SarjorKapasite && ToplamMermi != 0)
+            {
+                //SarjorSesi.Play();
+                animatorum.Play("sarjorDegis");
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -159,6 +163,22 @@ public class Ak47 : MonoBehaviour
 
         }
     }
+    IEnumerator CameraTitre(float titremeSuresi, float magnitude)
+    {
+        Vector3 orijinalPozisyon = benimCam.transform.localPosition;
+
+        float gecenSure = 0.0f;
+        while (gecenSure < titremeSuresi)
+        {
+            float x = Random.Range(-1, 1) * magnitude;
+            benimCam.transform.localPosition = new Vector3(x, orijinalPozisyon.y, orijinalPozisyon.x);
+            gecenSure += Time.deltaTime;
+            yield return null;
+
+        }
+
+        benimCam.transform.localPosition = orijinalPozisyon;
+    }
     void mermiKaydet(string silahTuru, int mermiSayisi)
     {
         MermiAlmaSesi.Play();
@@ -186,21 +206,16 @@ public class Ak47 : MonoBehaviour
     void SarjorSes()
     {
         SarjorSesi.Play();
-        if (KalanMermi < SarjorKapasite)
+        if (KalanMermi < SarjorKapasite && ToplamMermi != 0)
         {
-            if (KalanMermi != 0 && ToplamMermi != 0)
+            if (KalanMermi != 0)
             {
                 sarjorDoldurmaTeknik("MermiVar");
-            }
-            else if (ToplamMermi == 0)
-            {
-                sarjorDoldurmaTeknik("MermiYok");
             }
             else
             {
                 sarjorDoldurmaTeknik("MermiYok");
             }
-
         }
     }
     void sarjorDoldurmaTeknik(string tur)
@@ -297,7 +312,7 @@ public class Ak47 : MonoBehaviour
             Rigidbody rb = obje.GetComponent<Rigidbody>();
             rb.AddRelativeForce(new Vector3(-10, 1, 0) * 60);
         }
-
+        StartCoroutine(CameraTitre(.05f, .1f));
         AtesSesi.Play();
         AtesEfekti.Play();
         if (!yakinlastirmaVarmi)
