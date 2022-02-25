@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-
 public class Ak47 : MonoBehaviour
 {
     Animator animatorum;
@@ -73,13 +72,10 @@ public class Ak47 : MonoBehaviour
 
 
         }
+        Debug.Log("sarjordaki mermi " + KalanMermi + "Toplam mermi " + ToplamMermi);
         if (Input.GetKey(KeyCode.R))
         {
-            if (KalanMermi < SarjorKapasite && ToplamMermi != 0)
-            {
-                //SarjorSesi.Play();
-                animatorum.Play("sarjorDegis");
-            }
+            animatorum.Play("sarjorDegis");
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -165,19 +161,18 @@ public class Ak47 : MonoBehaviour
     }
     IEnumerator CameraTitre(float titremeSuresi, float magnitude)
     {
-        Vector3 orijinalPozisyon = benimCam.transform.localPosition;
+        Vector3 orjinalPozisyon = benimCam.transform.localPosition;
 
         float gecenSure = 0.0f;
         while (gecenSure < titremeSuresi)
         {
             float x = Random.Range(-1, 1) * magnitude;
-            benimCam.transform.localPosition = new Vector3(x, orijinalPozisyon.y, orijinalPozisyon.x);
+
+            benimCam.transform.localPosition = new Vector3(x, orjinalPozisyon.y, orjinalPozisyon.z);
             gecenSure += Time.deltaTime;
             yield return null;
-
         }
-
-        benimCam.transform.localPosition = orijinalPozisyon;
+        benimCam.transform.localPosition = orjinalPozisyon;
     }
     void mermiKaydet(string silahTuru, int mermiSayisi)
     {
@@ -206,16 +201,21 @@ public class Ak47 : MonoBehaviour
     void SarjorSes()
     {
         SarjorSesi.Play();
-        if (KalanMermi < SarjorKapasite && ToplamMermi != 0)
+        if (KalanMermi < SarjorKapasite)
         {
-            if (KalanMermi != 0)
+            if (KalanMermi != 0 && ToplamMermi != 0)
             {
                 sarjorDoldurmaTeknik("MermiVar");
+            }
+            else if (ToplamMermi == 0)
+            {
+                sarjorDoldurmaTeknik("MermiYok");
             }
             else
             {
                 sarjorDoldurmaTeknik("MermiYok");
             }
+
         }
     }
     void sarjorDoldurmaTeknik(string tur)
@@ -288,6 +288,8 @@ public class Ak47 : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Dusman"))
             {
                 Instantiate(KanEfekti, hit.point, Quaternion.LookRotation(hit.normal));
+
+                hit.transform.gameObject.GetComponent<Dusman>().DarbeAl(10);
             }
             else if (hit.transform.gameObject.CompareTag("DevrilebilirObje"))
             {
@@ -312,7 +314,7 @@ public class Ak47 : MonoBehaviour
             Rigidbody rb = obje.GetComponent<Rigidbody>();
             rb.AddRelativeForce(new Vector3(-10, 1, 0) * 60);
         }
-        StartCoroutine(CameraTitre(.05f, .1f));
+        StartCoroutine(CameraTitre(.1f,.04f));
         AtesSesi.Play();
         AtesEfekti.Play();
         if (!yakinlastirmaVarmi)
