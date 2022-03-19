@@ -27,6 +27,9 @@ public class GameKontrolcu : MonoBehaviour
     [Header("Diðer Ayarlarý")]
     public GameObject gameOverCanvas;
     public GameObject kazandinCanvas;
+    public TextMeshProUGUI saglik_Sayisi_Text;
+    public TextMeshProUGUI bomba_Sayisi_Text;
+
 
 
     public static int kalan_Dusman_Sayisi;
@@ -34,20 +37,8 @@ public class GameKontrolcu : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt("Taramali_Mermi", 500);
-        PlayerPrefs.SetInt("Magnum_Mermi", 300);
-        kalanDusman_Text.text = baslangic_Dusman_Sayisi.ToString();
-        kalan_Dusman_Sayisi = baslangic_Dusman_Sayisi;
-        if (!PlayerPrefs.HasKey("OyunBasladiMi"))
-        {
-            PlayerPrefs.SetInt("Taramali_Mermi", 70);
-            PlayerPrefs.SetInt("Pompali_Mermi", 50);
-            PlayerPrefs.SetInt("Magnum_Mermi", 30);
-            PlayerPrefs.SetInt("Sniper_Mermi", 20);
+        BaslangicIslemleri();
 
-            PlayerPrefs.SetInt("OyunBasladiMi", 1);
-        }
-        StartCoroutine(DusmanCikar());
     }
 
     void Update()
@@ -87,6 +78,38 @@ public class GameKontrolcu : MonoBehaviour
 
         }
     }
+
+    void BaslangicIslemleri()
+    {
+
+
+        PlayerPrefs.SetInt("Taramali_Mermi", 500);
+        PlayerPrefs.SetInt("Magnum_Mermi", 300);
+        PlayerPrefs.SetInt("Saglik_Sayisi", 1);
+        PlayerPrefs.SetInt("Bomba_Sayisi", 5);
+        if (!PlayerPrefs.HasKey("OyunBasladiMi"))
+        {
+            PlayerPrefs.SetInt("Taramali_Mermi", 70);
+            PlayerPrefs.SetInt("Pompali_Mermi", 50);
+            PlayerPrefs.SetInt("Magnum_Mermi", 30);
+            PlayerPrefs.SetInt("Sniper_Mermi", 20);
+            PlayerPrefs.SetInt("Saglik_Sayisi", 1);
+            PlayerPrefs.SetInt("Bomba_Sayisi", 5);
+
+            PlayerPrefs.SetInt("OyunBasladiMi", 1);
+        }
+        kalanDusman_Text.text = baslangic_Dusman_Sayisi.ToString();
+        kalanDusman_Text.text = baslangic_Dusman_Sayisi.ToString();
+
+
+        saglik_Sayisi_Text.text = PlayerPrefs.GetInt("Saglik_Sayisi").ToString();
+        bomba_Sayisi_Text.text = PlayerPrefs.GetInt("Bomba_Sayisi").ToString();
+
+        kalan_Dusman_Sayisi = baslangic_Dusman_Sayisi;
+
+
+        StartCoroutine(DusmanCikar());
+    }
     public void Dusman_Sayisi_Guncelle()
     {
         kalan_Dusman_Sayisi--;
@@ -112,6 +135,11 @@ public class GameKontrolcu : MonoBehaviour
     {
         health = 100;
         healthBar.fillAmount = health / 100;
+        PlayerPrefs.SetInt("Saglik_Sayisi", PlayerPrefs.GetInt("Saglik_Sayisi") - 1);
+        if (PlayerPrefs.GetInt("Saglik_Sayisi") <= 0)
+        {
+
+        }
     }
 
     private void GameOver()

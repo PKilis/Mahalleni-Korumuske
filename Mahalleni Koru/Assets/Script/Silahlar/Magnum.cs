@@ -96,6 +96,10 @@ public class Magnum : MonoBehaviour
             benimCam.fieldOfView = camFieldPov;
             cross.SetActive(true);
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+             
+        }
 
         if (zoomVarmi)
         {
