@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2771591443909783654}
   - component: {fileID: 4905155777296108202}
   - component: {fileID: 5370763918641173091}
+  - component: {fileID: -6473420796056019221}
   - component: {fileID: 5169136953857425707}
   - component: {fileID: 1606352773717554550}
   m_Layer: 0
@@ -92,12 +93,28 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7111696419435020889}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-6473420796056019221
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111696419435020889}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!195 &5169136953857425707
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -132,4 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b54f8afae1a2da64dba972e835d3a4b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gidecekYer: {fileID: 0}
+  hedef: {fileID: 0}
+  health: 100
+  dusmanDarbeGucu: 5

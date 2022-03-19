@@ -42,6 +42,8 @@ public class Ak47 : MonoBehaviour
     public TextMeshProUGUI KalanMermi_Text;
     public GameObject kovanCikis_noktasi;
     public GameObject kovanObjesi;
+    public float darbeGucu;
+
     public bool kovanCiksinMi;
     bool zoomVarmi;
 
@@ -72,7 +74,6 @@ public class Ak47 : MonoBehaviour
 
 
         }
-        Debug.Log("sarjordaki mermi " + KalanMermi + "Toplam mermi " + ToplamMermi);
         if (Input.GetKey(KeyCode.R))
         {
             animatorum.Play("sarjorDegis");
@@ -156,6 +157,13 @@ public class Ak47 : MonoBehaviour
             mermiKaydet(other.gameObject.GetComponent<mermiKutusu>().Olusan_silahin_Turu, other.gameObject.GetComponent<mermiKutusu>().Olusan_mermi_sayisi);
             Mermi_Kutusu_Olustur.mermi_Kutusu_Varmi = false;
             Destroy(other.transform.parent.gameObject);
+
+        }
+        if (other.gameObject.CompareTag("Saglik"))
+        {
+            FindObjectOfType<GameKontrolcu>().SaglikDoldur();
+            Saglik_Kutusu_Olustur.saglik_Kutusu_Varmi = false;
+            Destroy(other.transform.gameObject);
 
         }
     }
@@ -288,13 +296,12 @@ public class Ak47 : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Dusman"))
             {
                 Instantiate(KanEfekti, hit.point, Quaternion.LookRotation(hit.normal));
-
-                hit.transform.gameObject.GetComponent<Dusman>().DarbeAl(10);
+                hit.transform.gameObject.GetComponent<Dusman>().DarbeAl(darbeGucu);
             }
             else if (hit.transform.gameObject.CompareTag("DevrilebilirObje"))
             {
                 Rigidbody rg = hit.transform.gameObject.GetComponent<Rigidbody>();
-                rg.AddForce(-hit.normal * 60f);
+                rg.AddForce(-hit.normal * 50f);
                 Instantiate(MermiIzi, hit.point, Quaternion.LookRotation(hit.normal));
             }
             else
@@ -314,7 +321,7 @@ public class Ak47 : MonoBehaviour
             Rigidbody rb = obje.GetComponent<Rigidbody>();
             rb.AddRelativeForce(new Vector3(-10, 1, 0) * 60);
         }
-        StartCoroutine(CameraTitre(.1f,.04f));
+        StartCoroutine(CameraTitre(.1f, .04f));
         AtesSesi.Play();
         AtesEfekti.Play();
         if (!yakinlastirmaVarmi)

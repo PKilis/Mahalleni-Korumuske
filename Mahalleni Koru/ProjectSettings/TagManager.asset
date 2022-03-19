@@ -8,6 +8,9 @@ TagManager:
   - DevrilebilirObje
   - Yol
   - Mermi
+  - Korunacak
+  - AnaKontrolcum
+  - Saglik
   layers:
   - Default
   - TransparentFX

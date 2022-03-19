@@ -41,6 +41,8 @@ public class Magnum : MonoBehaviour
     public TextMeshProUGUI KalanMermi_Text;
     public GameObject kovanCikis_noktasi;
     public GameObject kovanObjesi;
+    public float darbeGucu;
+
     public bool kovanCiksinMi;
     bool zoomVarmi;
 
@@ -152,6 +154,13 @@ public class Magnum : MonoBehaviour
             mermiKaydet(other.gameObject.GetComponent<mermiKutusu>().Olusan_silahin_Turu, other.gameObject.GetComponent<mermiKutusu>().Olusan_mermi_sayisi);
             Mermi_Kutusu_Olustur.mermi_Kutusu_Varmi = false;
             Destroy(other.transform.parent.gameObject);
+
+        }
+        if (other.gameObject.CompareTag("Saglik"))
+        {
+            FindObjectOfType<GameKontrolcu>().SaglikDoldur();
+            Saglik_Kutusu_Olustur.saglik_Kutusu_Varmi = false;
+            Destroy(other.transform.gameObject);
 
         }
     }
@@ -284,11 +293,13 @@ public class Magnum : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Dusman"))
             {
                 Instantiate(KanEfekti, hit.point, Quaternion.LookRotation(hit.normal));
+
+                hit.transform.gameObject.GetComponent<Dusman>().DarbeAl(darbeGucu);
             }
             else if (hit.transform.gameObject.CompareTag("DevrilebilirObje"))
             {
                 Rigidbody rg = hit.transform.gameObject.GetComponent<Rigidbody>();
-                rg.AddForce(-hit.normal * 60f);
+                rg.AddForce(-hit.normal * 50f);
                 Instantiate(MermiIzi, hit.point, Quaternion.LookRotation(hit.normal));
             }
             else
