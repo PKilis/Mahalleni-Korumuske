@@ -15,6 +15,7 @@ public class GameKontrolcu : MonoBehaviour
     public GameObject bomba;
     public GameObject bombaPoint;
     public Camera benimCam;
+
     [Header("Dusman Ayarlarý")]
     public GameObject[] dusmanlar;
     public GameObject[] cikisNoktalar;
@@ -22,13 +23,16 @@ public class GameKontrolcu : MonoBehaviour
     public TextMeshProUGUI kalanDusman_Text;
     public int baslangic_Dusman_Sayisi;
     public int dusmanCikmaSuresi;
+
     [Header("Saðlýk Ayarlarý")]
     public Image healthBar;
+
     [Header("Diðer Ayarlarý")]
     public GameObject gameOverCanvas;
     public GameObject kazandinCanvas;
     public TextMeshProUGUI saglik_Sayisi_Text;
     public TextMeshProUGUI bomba_Sayisi_Text;
+    public AudioSource itemYok;
 
 
 
@@ -53,12 +57,17 @@ public class GameKontrolcu : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.G))
         {
-            GameObject objem = Instantiate(bomba, bombaPoint.transform.position, bombaPoint.transform.rotation);
-            Rigidbody rb = objem.GetComponent<Rigidbody>();
-            Vector3 acimiz = Quaternion.AngleAxis(90, benimCam.transform.forward) * benimCam.transform.forward;
-            rb.AddForce(acimiz * 250);
+            BombaAt();
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (healthBar.fillAmount < 1)
+            {
+                SaglikDoldur();
+            }
         }
     }
+
     IEnumerator DusmanCikar()
     {
         while (true)
@@ -82,19 +91,14 @@ public class GameKontrolcu : MonoBehaviour
     void BaslangicIslemleri()
     {
 
-
-        PlayerPrefs.SetInt("Taramali_Mermi", 500);
-        PlayerPrefs.SetInt("Magnum_Mermi", 300);
-        PlayerPrefs.SetInt("Saglik_Sayisi", 1);
-        PlayerPrefs.SetInt("Bomba_Sayisi", 5);
         if (!PlayerPrefs.HasKey("OyunBasladiMi"))
         {
-            PlayerPrefs.SetInt("Taramali_Mermi", 70);
+            PlayerPrefs.SetInt("Taramali_Mermi", PlayerPrefs.GetInt("Taramali_Mermi"));
             PlayerPrefs.SetInt("Pompali_Mermi", 50);
-            PlayerPrefs.SetInt("Magnum_Mermi", 30);
+            PlayerPrefs.SetInt("Magnum_Mermi", PlayerPrefs.GetInt("Magnum_Mermi"));
             PlayerPrefs.SetInt("Sniper_Mermi", 20);
-            PlayerPrefs.SetInt("Saglik_Sayisi", 1);
-            PlayerPrefs.SetInt("Bomba_Sayisi", 5);
+            PlayerPrefs.SetInt("Saglik_Sayisi", PlayerPrefs.GetInt("Saglik_Sayisi"));
+            PlayerPrefs.SetInt("Bomba_Sayisi", PlayerPrefs.GetInt("Bomba_Sayisi"));
 
             PlayerPrefs.SetInt("OyunBasladiMi", 1);
         }
@@ -133,13 +137,48 @@ public class GameKontrolcu : MonoBehaviour
     }
     public void SaglikDoldur()
     {
-        health = 100;
-        healthBar.fillAmount = health / 100;
-        PlayerPrefs.SetInt("Saglik_Sayisi", PlayerPrefs.GetInt("Saglik_Sayisi") - 1);
-        if (PlayerPrefs.GetInt("Saglik_Sayisi") <= 0)
+
+        if (PlayerPrefs.GetInt("Saglik_Sayisi") != 0)
         {
+            health = 100;
+            healthBar.fillAmount = health / 100;
+            PlayerPrefs.SetInt("Saglik_Sayisi", PlayerPrefs.GetInt("Saglik_Sayisi") - 1);
+            saglik_Sayisi_Text.text = PlayerPrefs.GetInt("Saglik_Sayisi").ToString();
 
         }
+        else
+        {
+            itemYok.Play();
+        }
+    }
+    public void Saglik_Al()
+    {
+        PlayerPrefs.SetInt("Saglik_Sayisi", PlayerPrefs.GetInt("Saglik_Sayisi") + 1);
+        saglik_Sayisi_Text.text = PlayerPrefs.GetInt("Saglik_Sayisi").ToString();
+    }
+    public void Bomba_Al()
+    {
+        PlayerPrefs.SetInt("Bomba_Sayisi", PlayerPrefs.GetInt("Bomba_Sayisi") + 1);
+        bomba_Sayisi_Text.text = PlayerPrefs.GetInt("Bomba_Sayisi").ToString();
+
+    }
+    private void BombaAt()
+    {
+        if (PlayerPrefs.GetInt("Bomba_Sayisi") != 0)
+        {
+            GameObject objem = Instantiate(bomba, bombaPoint.transform.position, bombaPoint.transform.rotation);
+            Rigidbody rb = objem.GetComponent<Rigidbody>();
+            Vector3 acimiz = Quaternion.AngleAxis(90, benimCam.transform.forward) * benimCam.transform.forward;
+            rb.AddForce(acimiz * 250);
+
+            PlayerPrefs.SetInt("Bomba_Sayisi", PlayerPrefs.GetInt("Bomba_Sayisi") - 1);
+            bomba_Sayisi_Text.text = PlayerPrefs.GetInt("Bomba_Sayisi").ToString();
+        }
+        else
+        {
+            itemYok.Play();
+        }
+
     }
 
     private void GameOver()

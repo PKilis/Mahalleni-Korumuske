@@ -161,10 +161,16 @@ public class Ak47 : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Saglik"))
         {
-            FindObjectOfType<GameKontrolcu>().SaglikDoldur();
+            FindObjectOfType<GameKontrolcu>().Saglik_Al();
             Saglik_Kutusu_Olustur.saglik_Kutusu_Varmi = false;
             Destroy(other.transform.gameObject);
 
+        }
+        if (other.gameObject.CompareTag("Bomba_Kutusu"))
+        {
+            FindObjectOfType<GameKontrolcu>().Bomba_Al();
+            Bomba_Kutusu_Olustur.bomba_Kutusu_Varmi = false;
+            Destroy(other.transform.gameObject);
         }
     }
     IEnumerator CameraTitre(float titremeSuresi, float magnitude)
