@@ -66,10 +66,14 @@ public class Magnum : MonoBehaviour
         {
             if (atesEdebilirmi && Time.time > iceridenAtesEtmeSikligi && KalanMermi != 0)
             {
-                AtesEt(false);
-                iceridenAtesEtmeSikligi = Time.time + disaridanAtesEtmeSikligi;
+                if (!GameKontrolcu.oyunDurdurmu)
+                {
+                    AtesEt(false);
+                    iceridenAtesEtmeSikligi = Time.time + disaridanAtesEtmeSikligi;
+                }
+
             }
-            if (KalanMermi == 0)
+            if (KalanMermi == 0 && !GameKontrolcu.oyunDurdurmu)
             {
                 MermiBitmeSesi.Play();
             }
@@ -118,7 +122,7 @@ public class Magnum : MonoBehaviour
                     AtesEt(true);
                     iceridenAtesEtmeSikligi = Time.time + disaridanAtesEtmeSikligi;
                 }
-                if (KalanMermi == 0)
+                if (KalanMermi == 0 && !GameKontrolcu.oyunDurdurmu)
                 {
                     MermiBitmeSesi.Play();
                 }

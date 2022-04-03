@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class GameKontrolcu : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class GameKontrolcu : MonoBehaviour
 
 
     public static int kalan_Dusman_Sayisi;
+    public static bool oyunDurdurmu;
 
 
     void Start()
@@ -49,29 +51,34 @@ public class GameKontrolcu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (!oyunDurdurmu)
         {
-            SilahDegistir(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SilahDegistir(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.G))
-        {
-            BombaAt();
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (healthBar.fillAmount < 1)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                SaglikDoldur();
+                SilahDegistir(0);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                SilahDegistir(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.G))
+            {
+                BombaAt();
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (healthBar.fillAmount < 1)
+                {
+                    SaglikDoldur();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Pause();
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Pause();
-        }
+
+
     }
 
     IEnumerator DusmanCikar()
@@ -96,7 +103,7 @@ public class GameKontrolcu : MonoBehaviour
 
     void BaslangicIslemleri()
     {
-
+        oyunDurdurmu = false;
 
         if (!PlayerPrefs.HasKey("OyunBasladiMi"))
         {
@@ -145,7 +152,7 @@ public class GameKontrolcu : MonoBehaviour
     public void SaglikDoldur()
     {
 
-        if (PlayerPrefs.GetInt("Saglik_Sayisi") != 0)
+        if (PlayerPrefs.GetInt("Saglik_Sayisi") != 0 && health <= 100)
         {
             health = 100;
             healthBar.fillAmount = health / 100;
@@ -192,6 +199,11 @@ public class GameKontrolcu : MonoBehaviour
     {
         gameOverCanvas.SetActive(true);
         Time.timeScale = 0;
+        oyunDurdurmu = true;
+        Cursor.visible = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>().m_MouseLook.lockCursor = false;
+        Cursor.lockState = CursorLockMode.None;
+
 
     }
 
@@ -208,6 +220,10 @@ public class GameKontrolcu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
+        oyunDurdurmu = false;
+        Cursor.visible = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>().m_MouseLook.lockCursor = true;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public void AnaMenu()
     {
@@ -218,10 +234,18 @@ public class GameKontrolcu : MonoBehaviour
     {
         pauseCanvas.SetActive(true);
         Time.timeScale = 0;
+        oyunDurdurmu = true;
+        Cursor.visible = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>().m_MouseLook.lockCursor = false;
+        Cursor.lockState = CursorLockMode.None;
     }
     public void DevamEt()
     {
         pauseCanvas.SetActive(false);
         Time.timeScale = 1;
+        oyunDurdurmu = false; 
+        Cursor.visible = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>().m_MouseLook.lockCursor = true;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }

@@ -67,8 +67,12 @@ public class Ak47 : MonoBehaviour
         {
             if (atesEdebilirmi && Time.time > iceridenAtesEtmeSikligi && KalanMermi != 0)
             {
-                AtesEt(false);
-                iceridenAtesEtmeSikligi = Time.time + disaridanAtesEtmeSikligi;
+                if (!GameKontrolcu.oyunDurdurmu)
+                {
+                    AtesEt(false);
+                    iceridenAtesEtmeSikligi = Time.time + disaridanAtesEtmeSikligi;
+                }
+
             }
             if (KalanMermi == 0)
             {
