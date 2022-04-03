@@ -43,6 +43,7 @@ public class Dusman : MonoBehaviour
         if (health <= 0)
         {
             Oldun();
+            gameObject.tag = "Untagged";
         }
     }
 

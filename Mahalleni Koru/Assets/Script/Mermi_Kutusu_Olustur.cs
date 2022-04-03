@@ -23,7 +23,7 @@ public class Mermi_Kutusu_Olustur : MonoBehaviour
             {
                 yield return new WaitForSeconds(mermi_Kutu_Suresi);
 
-                int randomSayim = Random.Range(0, 4);
+                int randomSayim = Random.Range(0, 2);
                 Instantiate(mermi_Kutusu, mermi_Kutu_Points[randomSayim].transform.position, mermi_Kutu_Points[randomSayim].transform.rotation);
                 mermi_Kutusu_Varmi = true;
             }

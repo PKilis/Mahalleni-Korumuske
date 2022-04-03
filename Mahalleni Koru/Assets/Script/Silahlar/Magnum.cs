@@ -41,10 +41,14 @@ public class Magnum : MonoBehaviour
     public TextMeshProUGUI KalanMermi_Text;
     public GameObject kovanCikis_noktasi;
     public GameObject kovanObjesi;
+    public GameObject mermi_Cikis_Noktasi;
+    public GameObject mermi;
     public float darbeGucu;
 
     public bool kovanCiksinMi;
     bool zoomVarmi;
+
+
 
     void Start()
     {
@@ -74,7 +78,11 @@ public class Magnum : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.R))
         {
-            animatorum.Play("sarjorDegis");
+            if (KalanMermi < SarjorKapasite)
+            {
+                animatorum.Play("sarjorDegis");
+            }
+
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -329,6 +337,8 @@ public class Magnum : MonoBehaviour
             Rigidbody rb = obje.GetComponent<Rigidbody>();
             rb.AddRelativeForce(new Vector3(-10, 1, 0) * 60);
         }
+
+        Instantiate(mermi, mermi_Cikis_Noktasi.transform.position, mermi_Cikis_Noktasi.transform.rotation);
         StartCoroutine(CameraTitre(.10f, .08f));
         AtesSesi.Play();
         AtesEfekti.Play();

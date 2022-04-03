@@ -30,6 +30,7 @@ public class GameKontrolcu : MonoBehaviour
     [Header("Diðer Ayarlarý")]
     public GameObject gameOverCanvas;
     public GameObject kazandinCanvas;
+    public GameObject pauseCanvas;
     public TextMeshProUGUI saglik_Sayisi_Text;
     public TextMeshProUGUI bomba_Sayisi_Text;
     public AudioSource itemYok;
@@ -41,6 +42,7 @@ public class GameKontrolcu : MonoBehaviour
 
     void Start()
     {
+
         BaslangicIslemleri();
 
     }
@@ -65,6 +67,10 @@ public class GameKontrolcu : MonoBehaviour
             {
                 SaglikDoldur();
             }
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
         }
     }
 
@@ -91,14 +97,15 @@ public class GameKontrolcu : MonoBehaviour
     void BaslangicIslemleri()
     {
 
+
         if (!PlayerPrefs.HasKey("OyunBasladiMi"))
         {
-            PlayerPrefs.SetInt("Taramali_Mermi", PlayerPrefs.GetInt("Taramali_Mermi"));
+            PlayerPrefs.SetInt("Taramali_Mermi", 250);
             PlayerPrefs.SetInt("Pompali_Mermi", 50);
-            PlayerPrefs.SetInt("Magnum_Mermi", PlayerPrefs.GetInt("Magnum_Mermi"));
+            PlayerPrefs.SetInt("Magnum_Mermi", 80);
             PlayerPrefs.SetInt("Sniper_Mermi", 20);
-            PlayerPrefs.SetInt("Saglik_Sayisi", PlayerPrefs.GetInt("Saglik_Sayisi"));
-            PlayerPrefs.SetInt("Bomba_Sayisi", PlayerPrefs.GetInt("Bomba_Sayisi"));
+            PlayerPrefs.SetInt("Saglik_Sayisi", 3);
+            PlayerPrefs.SetInt("Bomba_Sayisi", 2);
 
             PlayerPrefs.SetInt("OyunBasladiMi", 1);
         }
@@ -200,5 +207,21 @@ public class GameKontrolcu : MonoBehaviour
     public void BastanBasla()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
+    }
+    public void AnaMenu()
+    {
+        SceneManager.LoadScene(0);
+
+    }
+    public void Pause()
+    {
+        pauseCanvas.SetActive(true);
+        Time.timeScale = 0;
+    }
+    public void DevamEt()
+    {
+        pauseCanvas.SetActive(false);
+        Time.timeScale = 1;
     }
 }

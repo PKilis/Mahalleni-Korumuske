@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class mermiKutusu : MonoBehaviour
 {
-    string[] silah = { "Magnum", "Pompali", "sniper", "Keles" };
-    int[] mermiSayisi = { 20, 10, 30, 50, 100 };
+    string[] silah = { "Magnum", "Keles" };
+    int[] mermiSayisi = { 20, 60, 30, 50, 100 };
     public string Olusan_silahin_Turu;
     public int Olusan_mermi_sayisi;
 

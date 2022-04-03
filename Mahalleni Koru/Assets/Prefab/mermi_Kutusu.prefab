@@ -307,10 +307,8 @@ MonoBehaviour:
   Olusan_silahin_Turu: keles
   Olusan_mermi_sayisi: 10
   silah_Resimleri:
-  - {fileID: 21300000, guid: ef41b346c3f4af34c8391606b4c75561, type: 3}
-  - {fileID: 21300000, guid: 2e921b7827c0a614982b2339f7c3dbd3, type: 3}
-  - {fileID: 21300000, guid: 955f34c33b41c464d8968fc97436c919, type: 3}
   - {fileID: 21300000, guid: b147009d508006c47acf0f47b0e58ef3, type: 3}
+  - {fileID: 21300000, guid: ef41b346c3f4af34c8391606b4c75561, type: 3}
   silahin_Resmi: {fileID: 865815731}
 --- !u!65 &576831359358649471
 BoxCollider:
